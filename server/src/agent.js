@@ -47,6 +47,7 @@ ${JSON_CONTRACT}`;
  * They also don't support tool/function calling, so we ask for raw JSON in the prompt.
  */
 async function callForge(messages) {
+  if (process.env.MOCK_MODE === "true") return mockComponent();
   if (!process.env.NEBIUS_API_KEY) {
     const err = new Error("NEBIUS_API_KEY is not set. Copy server/.env.example to server/.env and add your Token Factory key.");
     err.status = 503;
@@ -96,7 +97,51 @@ export function getStatus() {
   return {
     model: MODEL || null,
     keyConfigured: !!process.env.NEBIUS_API_KEY,
+    mockMode: process.env.MOCK_MODE === "true",
     baseURL: BASE_URL,
+  };
+}
+
+/**
+ * MOCK_MODE=true → no API key, no credits spent. Returns a canned component so the
+ * whole UI + preview + iterate + auto-fix loop can be built and tested for free.
+ * Flip it off and add a real key when doing final integration and the demo video.
+ */
+function mockComponent() {
+  const code = `function MockPricing() {
+  const tiers = [
+    { name: "Starter", price: "₹499", features: ["1 AI reel", "2 thumbnails", "Email support"] },
+    { name: "Growth", price: "₹1,499", features: ["5 AI reels", "10 creatives", "Priority support"], hot: true },
+    { name: "Scale", price: "₹4,999", features: ["Unlimited reels", "Brand kit", "Dedicated manager"] }
+  ];
+  return (
+    <div className="min-h-screen bg-zinc-950 text-white p-8">
+      <h1 className="text-3xl font-bold text-center mb-2">Simple pricing</h1>
+      <p className="text-zinc-400 text-center mb-8">Mock output — connect a real API key for AI generation.</p>
+      <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        {tiers.map((t) => (
+          <div key={t.name} className={"rounded-2xl p-6 border " + (t.hot ? "border-lime-400 bg-zinc-900 scale-105" : "border-zinc-800 bg-zinc-900/50")}>
+            {t.hot && <span className="text-xs font-bold bg-lime-400 text-black px-2 py-1 rounded-full">POPULAR</span>}
+            <h2 className="text-xl font-semibold mt-2">{t.name}</h2>
+            <p className="text-3xl font-bold my-4">{t.price}<span className="text-sm text-zinc-500">/mo</span></p>
+            <ul className="space-y-2 text-sm text-zinc-300">
+              {t.features.map((f) => <li key={f}>✓ {f}</li>)}
+            </ul>
+            <button className={"w-full mt-6 py-2 rounded-xl font-semibold " + (t.hot ? "bg-lime-400 text-black" : "bg-zinc-800 text-white")}>Choose</button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}`;
+  return {
+    component: {
+      componentName: "MockPricing",
+      code,
+      explanation: "Mock mode — connect a real API key for AI generation.",
+    },
+    model: "mock",
+    usage: null,
   };
 }
 

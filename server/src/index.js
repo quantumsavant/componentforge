@@ -54,6 +54,8 @@ app.post("/api/fix", async (req, res) => {
 // Serve the built client in production (single-origin deploy)
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const distDir = path.join(__dirname, "..", "..", "client", "dist");
+// Vendored preview libs (React/Babel/Tailwind) so the live preview works offline.
+app.use("/vendor", express.static(path.join(__dirname, "..", "vendor")));
 app.use(express.static(distDir));
 app.use((req, res, next) => {
   if (req.path.startsWith("/api")) return next();

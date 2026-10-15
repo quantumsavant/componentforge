@@ -8,6 +8,51 @@ const EXAMPLES = [
   "A testimonial wall with initials avatars, no external images",
 ];
 
+// Bundled demo so the preview/code tabs can be tried without an API key.
+const SAMPLE = {
+  componentName: "PricingSection",
+  explanation: "Sample output — dark 3-tier pricing with the middle tier highlighted in lime.",
+  code: `function PricingSection() {
+  const tiers = [
+    { name: "Starter", price: "₹499", period: "/project",
+      features: ["1 AI product film", "2 revisions", "48-hr delivery"], highlighted: false },
+    { name: "Growth", price: "₹1,499", period: "/month",
+      features: ["4 AI product films", "Unlimited revisions", "Priority support"], highlighted: true },
+    { name: "Scale", price: "₹4,999", period: "/month",
+      features: ["12 AI product films", "Dedicated manager", "Ad creatives bundle"], highlighted: false },
+  ];
+  return (
+    <div className="bg-[#0a0a0a] text-white rounded-2xl px-8 py-12">
+      <h2 className="text-3xl font-extrabold text-center tracking-tight">Simple pricing</h2>
+      <p className="text-zinc-400 text-center mt-2 mb-10 text-sm">No shoot. No studio. Just scroll-stopping creative.</p>
+      <div className="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
+        {tiers.map((t) => (
+          <div key={t.name} className={"rounded-2xl p-6 border " + (t.highlighted
+            ? "bg-[#d8f800] text-black border-[#d8f800] md:scale-105"
+            : "bg-[#141414] border-zinc-800")}>
+            <p className={"text-xs font-bold uppercase tracking-widest " + (t.highlighted ? "text-black/60" : "text-zinc-500")}>{t.name}</p>
+            <p className="mt-3 text-4xl font-black">{t.price}
+              <span className={"text-sm font-medium " + (t.highlighted ? "text-black/60" : "text-zinc-500")}>{t.period}</span>
+            </p>
+            <ul className="mt-6 space-y-2.5 text-sm">
+              {t.features.map((f) => (
+                <li key={f} className="flex items-center gap-2">
+                  <span className={t.highlighted ? "text-black" : "text-[#d8f800]"}>✓</span>
+                  <span className={t.highlighted ? "text-black/80" : "text-zinc-300"}>{f}</span>
+                </li>
+              ))}
+            </ul>
+            <button className={"mt-8 w-full rounded-xl py-3 text-sm font-bold " + (t.highlighted ? "bg-black text-[#d8f800]" : "bg-[#d8f800] text-black")}>
+              Choose {t.name}
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}`,
+};
+
 export default function App() {
   const [prompt, setPrompt] = useState("");
   const [busy, setBusy] = useState(false);
@@ -75,6 +120,13 @@ export default function App() {
     setError({ message, fixable: true });
   }, []);
 
+  const loadSample = () => {
+    setCurrent(SAMPLE);
+    setHistory((h) => [...h, { prompt: "Sample: dark pricing section, 3 tiers", name: SAMPLE.componentName }]);
+    setError(null);
+    setTab("preview");
+  };
+
   const copyCode = async () => {
     if (!current) return;
     await navigator.clipboard.writeText(current.code);
@@ -135,6 +187,13 @@ export default function App() {
               className="w-full bg-[#d8f800] text-black font-bold text-sm rounded-xl py-3 disabled:opacity-40 disabled:cursor-not-allowed hover:brightness-110 transition"
             >
               {busy ? "Forging…" : current ? "Iterate with AI" : "Generate component"}
+            </button>
+            <button
+              type="button"
+              onClick={loadSample}
+              className="w-full text-xs text-zinc-500 hover:text-[#d8f800] transition"
+            >
+              No API key? Load a sample →
             </button>
           </form>
 

@@ -3,7 +3,8 @@ import { useEffect, useMemo, useRef } from "react";
 /**
  * Renders AI-generated React code live in a sandboxed iframe.
  * The generated code is a single component (no imports/exports by contract).
- * Babel compiles the JSX in-frame; React 18 UMD + Tailwind CDN do the rest.
+ * Babel compiles the JSX in-frame; vendored React 18 UMD + Tailwind (served
+ * locally at /vendor) do the rest, so the preview works offline.
  * Runtime errors are posted back to the parent for the auto-fix loop.
  */
 export default function PreviewFrame({ code, componentName, onError }) {
@@ -15,10 +16,10 @@ export default function PreviewFrame({ code, componentName, onError }) {
 <html>
 <head>
 <meta charset="utf-8" />
-<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"><\/script>
-<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"><\/script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"><\/script>
-<script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"><\/script>
+<script src="/vendor/tailwind-browser.js"><\/script>
+<script src="/vendor/react.production.min.js"><\/script>
+<script src="/vendor/react-dom.production.min.js"><\/script>
+<script src="/vendor/babel.min.js"><\/script>
 <style>body{margin:0;padding:28px;background:#f4f4f5;font-family:ui-sans-serif,system-ui,sans-serif;}</style>
 </head>
 <body>

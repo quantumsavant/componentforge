@@ -8,6 +8,9 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': 'http://localhost:8787',
+      // Preview iframe loads vendored libs from /vendor (served by the server).
+      // Without this, the live preview 404s in dev and renders blank.
+      '/vendor': 'http://localhost:8787',
     },
   },
 })

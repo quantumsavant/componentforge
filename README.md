@@ -55,14 +55,38 @@ npm run dev          # → http://localhost:5173 (proxies /api to the server)
 
 Open http://localhost:5173, type a component description, hit **Generate**.
 
+## No API key? Run in mock mode
+
+No key, no credits needed. The server returns a canned component so you can
+test the full UI + preview loop end to end:
+
+```bash
+# 1. server (no .env file needed)
+cd server
+npm install
+MOCK_MODE=true npm run dev  # → http://localhost:8787
+
+# 2. client (new terminal)
+cd client
+npm install
+npm run dev                  # → http://localhost:5173
+```
+
+Mock mode is honest by design: `/api/health` reports `"mockMode": true` and
+`"keyConfigured": false`, and no call ever leaves the machine. The submission
+demo video was recorded in mock mode for exactly this reason — no live Nebius
+call has been made yet, because Token Factory API key creation is gated on a
+bank card.
+
 ## Env vars (server/.env)
 
 | Var | Required | What |
 |---|---|---|
-| `NEBIUS_API_KEY` | yes | Token Factory API key |
-| `NEBIUS_MODEL` | yes | Exact model id, e.g. `nvidia/nemotron-3-super-120b-a12b` — copy verbatim from the playground, don't guess |
+| `NEBIUS_API_KEY` | yes, unless `MOCK_MODE=true` | Token Factory API key |
+| `NEBIUS_MODEL` | yes, unless `MOCK_MODE=true` | Exact model id, e.g. `nvidia/nemotron-3-super-120b-a12b` — copy verbatim from the playground, don't guess |
 | `NEBIUS_BASE_URL` | no | Defaults to `https://api.tokenfactory.nebius.com/v1` |
 | `PORT` | no | Defaults to `8787` |
+| `MOCK_MODE` | no | `true` → canned component, no key, no credits, no network call to Nebius |
 
 ## API
 

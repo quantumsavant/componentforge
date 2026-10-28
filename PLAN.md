@@ -35,19 +35,30 @@ Budget: ~2–3 focused hours/day — assignments + NSP scholarship share the sam
 - [ ] Env vars on the host; public demo URL live; test from phone + fresh browser
 - [ ] Confirm no API key leaks to the client bundle
 
-## Oct 26–27 — Demo video (≤3 min)
+## ⚠ Kanpur trip (plan corrected 17 Oct): assignment hard-copy submission is a
+## Lucknow→Kanpur day trip on Wed 28 or Thu 29 Oct (Tue 27 backup) — NO coding those days.
+## New rule: the full submission packet must be DONE by Oct 27 evening.
+## Oct 30 = press submit + rest only.
+
+## Oct 24–25 — Demo video (≤3 min)  [moved earlier]
 Script: the problem (UI takes too long) → type a prompt → code streams → **live preview**
 → iterate ("highlight tier 2") → break it → **auto-fix** → export .jsx.
 - [ ] Record screen + voiceover, upload to YouTube (public or unlisted)
+- [ ] If no API key yet: record against MOCK_MODE, note it honestly in the video description
 
-## Oct 28 — Submission writing
+## Oct 26 — Deploy + submission writing
+- [ ] Deploy mock-mode demo (server + client, MOCK_MODE=true) → public demo URL, test from phone
+- [ ] Push repo to **public** GitHub (MIT LICENSE already at root; no remote set yet)
 - [ ] Devpost write-up: what, why, how (Nemotron + Token Factory usage, concrete)
-- [ ] **Feedback on Token Factory/NVIDIA tools** (required submission item — keep notes all along)
-- [ ] License check: MIT LICENSE at repo root, README run instructions
+- [ ] **Feedback on Token Factory/NVIDIA tools** (required submission item — the card-wall onboarding experience itself is valid feedback)
+- [ ] If the API key lands: paste NEBIUS_API_KEY + NEBIUS_MODEL into server/.env, re-record demo with real Nemotron, re-deploy
 
-## Oct 29 — Dress rehearsal
+## Oct 27 — Dress rehearsal + FREEZE
 - [ ] Fresh-machine checklist: clone repo → follow README → working in <10 min
 - [ ] Re-read the official rules once; confirm every submission field is filled
+- [ ] Packet done: demo URL live, video public, repo public, Devpost draft saved. FREEZE.
+
+## Oct 28–29 — Kanpur assignment submission (no hackathon work)
 
 ## Oct 30 — Ship
 - [ ] Submit before **10:30 PM IST**. Then rest.
